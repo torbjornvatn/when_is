@@ -1,49 +1,64 @@
-
-module DateConverter
-  require 'date'
-  @days = 0
-  today = Date.today
-  @day = today.day
-  @month = today.month
-  @year = today.year
-  @date = strong("hei")
-  
-  def parse_date
-    date_string = "#{@year}-#{@month}-#{@day}"
-    @date = Date.parse(date_string).to_s
-    
+require 'date'
+class When_is
+  attr_accessor :day, :month, :year
+  def initialize
+    today = Date.today
+    @day = today.day
+    @month = today.month
+    @year = today.year
+    @offset = 0
   end
+  
+  def to_s
+    display_date = Date.parse("#{@year}-#{@month}-#{@day}") 
+    (display_date - @offset).to_s
+  end
+  
+  def subtract(days)
+    @offset = -days
+  end
+  
+  def add(days)
+    @offset = days
+  end
+  
 end
 
-Shoes.app(:title => "when_is", :resizable => false) do
-  extend DateConverter
+new_date = nil
+when_is = When_is.new
+
+Shoes.app(:title => "when_is") do
   background lavender
   banner 'when is'
+  
   flow(:width => 120, :margin => [3, 30, 0, 0]) do
-    @before = edit_line :text => "days", :width => 50
-    @before.change do |b|
-      @days = b.text.to_i
+    edit_line :text => "days", :width => 50 do |before|
+      when_is.add before.text.to_i
+      new_date.replace when_is
     end
   end
+  
   flow(:width => 120, :margin => [3, 30, 0, 0]) do
     list_box :items => (1..31).to_a, :choose => 1, :width => 50 do |d|
-      @day = d.text
-      parse_date
+      when_is.day = d.text
+      new_date.replace when_is
     end
     list_box :items => Date::ABBR_MONTHNAMES, :choose => 'Jan', :width => 50 do |m|
-      @month = m.text
-      parse_date
+      when_is.month = m.text
+      new_date.replace when_is
     end
     list_box :items => (2009..2050).to_a, :choose => Date.today.year, :width => 50 do |y|
-      @year = y.text
-      parse_date
+      when_is.year = y.text
+      new_date.replace when_is
     end
   end
+  
   flow(:width => 120, :margin => [3, 30, 0, 0]) do
-    @after = edit_line :text => "days", :width => 50
-    @after.change do |b|
-      days = -b.text.to_i
+    edit_line :text => "days", :width => 50 do |after|
+      when_is.subtract after.text.to_i
+      new_date.replace when_is
     end
   end
-  para @date
+  
+  new_date = para strong(when_is)
 end
