@@ -10,9 +10,10 @@ class When_is
   end
   
   def change
+    debug "changing"
     @date = Date.parse("#{@year}-#{@month}-#{@day}")
-    @app.after((@date + @after_offset).to_s)
-    @app.before((@date - @before_offset).to_s)
+    @app.after((@date + @after_offset).to_s) unless @after_offset == nil
+    @app.before((@date - @before_offset).to_s) unless @before_offset == nil
   end
   
   def subtract(days)
@@ -43,12 +44,12 @@ Shoes.app :title => "when_is", :width => 800, :resizable => false do
   end
   
   stack do
-    background lavender
+    background white
     title '_when is'
     
     flow :margin_left => 35 do
       
-      @before = caption strong("when_is"), :stroke => firebrick, :margin => [0,10,5,0]
+      @before = caption strong("?"), :stroke => firebrick, :margin => [0,10,5,0]
       caption strong("="), :stroke => firebrick, :margin => [5,10,5,0]
       caption strong("days"), :stroke => firebrick, :margin => [5,10,5,0]
       edit_line :width => 50, :margin => [5,7,5,0] do |days|
@@ -58,13 +59,16 @@ Shoes.app :title => "when_is", :width => 800, :resizable => false do
       flow :width => 220, :height => 40 do
         border firebrick, :strokewidth => 2
         list_box :items => (1..31).to_a, :choose => 1, :width => 50, :margin => 5 do |d|
-          when_is.day = d.text; when_is.change
+          when_is.day = d.text
+          when_is.change
         end
         list_box :items => Date::ABBR_MONTHNAMES, :choose => 'Jan', :width => 70, :margin => 5 do |m|
-          when_is.month = m.text; when_is.change
+          when_is.month = m.text
+          when_is.change
         end
         list_box :items => (2009..2050).to_a, :choose => Date.today.year, :width => 100, :margin => 5 do |y|
-          when_is.year = y.text; when_is.change
+          when_is.year = y.text
+          when_is.change
         end
       end
       subtitle strong("+"), :stroke => firebrick, :margin => [5,0,5,0]
@@ -73,7 +77,7 @@ Shoes.app :title => "when_is", :width => 800, :resizable => false do
       end
       caption strong("days"), :stroke => firebrick, :margin => [0,10,5,0]
       caption strong("="), :stroke => firebrick, :margin => [0,10,5,0]
-      @after = caption strong("when_is"), :stroke => firebrick, :margin => [0,10,5,0]
+      @after = caption strong("?"), :stroke => firebrick, :margin => [0,10,5,0]
     end
   end
 end
