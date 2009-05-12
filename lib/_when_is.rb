@@ -32,8 +32,9 @@ class When_is
   
 end
 
-Shoes.app :title => "when_is", :width => 800, :resizable => false do
+Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => false do
   when_is = When_is.new self
+  background oldlace
   
   def before(date)
     @before.replace date
@@ -43,21 +44,25 @@ Shoes.app :title => "when_is", :width => 800, :resizable => false do
     @after.replace date
   end
   
-  stack do
-    background white
+  stack :margin => 30 do
     title '_when is'
     
-    flow :margin_left => 35 do
-      
-      @before = caption strong("?"), :stroke => firebrick, :margin => [0,10,5,0]
+    flow :margin => 20 do
+      flow(:width => 100){@before = caption strong("?"), :stroke => firebrick, :margin => [0,10,5,0], :align => 'right'}
       caption strong("="), :stroke => firebrick, :margin => [5,10,5,0]
       caption strong("days"), :stroke => firebrick, :margin => [5,10,5,0]
       edit_line :width => 50, :margin => [5,7,5,0] do |days|
         when_is.subtract days.text.to_i
       end
-      subtitle strong("-"), :stroke => firebrick, :margin => [0,0,10,0]
-      flow :width => 220, :height => 40 do
-        border firebrick, :strokewidth => 2
+      subtitle strong("-"), :stroke => firebrick, :margin => [0,0,8,0]
+      flow :width => 220 do
+        #border firebrick, :strokewidth => 2
+        flow(:left => -10, :top => -11) do
+          fill oldlace
+          stroke firebrick
+          strokewidth 3
+          rect 10, 10, 220, 40, 10
+        end
         list_box :items => (1..31).to_a, :choose => 1, :width => 50, :margin => 5 do |d|
           when_is.day = d.text
           when_is.change
@@ -77,7 +82,7 @@ Shoes.app :title => "when_is", :width => 800, :resizable => false do
       end
       caption strong("days"), :stroke => firebrick, :margin => [0,10,5,0]
       caption strong("="), :stroke => firebrick, :margin => [0,10,5,0]
-      @after = caption strong("?"), :stroke => firebrick, :margin => [0,10,5,0]
+      flow(:width => 100){@after = caption strong("?"), :stroke => firebrick, :margin => [0,10,5,0], :align => 'left'}
     end
   end
 end
