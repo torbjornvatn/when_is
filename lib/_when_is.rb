@@ -31,7 +31,7 @@ class When_is
   end
   
 end
-
+$version = 0.2
 Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => false do
   when_is = When_is.new self
   today = when_is.today
@@ -45,7 +45,7 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
     @after.replace date
   end
   
-  stack :margin => 30 do
+  stack :margin => [30,30,30,0] do
     title '_when is'
     
     flow :margin => 20 do
@@ -73,7 +73,7 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
           when_is.month = m.text
           when_is.change
         end
-        list_box :items => (2009..2050).to_a, :choose => today.year, :width => 80, :margin => 5 do |y|
+        list_box :items => (1970..2050).to_a, :choose => today.year, :width => 80, :margin => 5 do |y|
           when_is.year = y.text
           when_is.change
         end
@@ -86,5 +86,6 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
       caption strong("="), :stroke => firebrick, :margin => [0,10,5,0]
       flow(:width => 100){@after = caption strong("?"), :stroke => firebrick, :margin => [0,10,5,0], :align => 'left'}
     end
+    inscription "v#{$version}", :stroke => gray, :margin_top => 90
   end
 end
