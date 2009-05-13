@@ -1,12 +1,12 @@
 require 'date'
 class When_is
-  attr_accessor :day, :month, :year
+  attr_accessor :day, :month, :year, :today
   def initialize(app)
     @app = app
-    today = Date.today
-    @day = today.day
-    @month = today.month
-    @year = today.year
+    @today = Date.today
+    @day = @today.day
+    @month = @today.month
+    @year = @today.year
   end
   
   def change
@@ -34,6 +34,7 @@ end
 
 Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => false do
   when_is = When_is.new self
+  today = when_is.today
   background oldlace
   
   def before(date)
@@ -63,15 +64,16 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
           strokewidth 3
           rect 10, 10, 220, 40, 10
         end
-        list_box :items => (1..31).to_a, :choose => 1, :width => 50, :margin => 5 do |d|
+        list_box :items => (1..31).to_a, :choose => today.day, :width => 67, :margin => [10,5,5,5] do |d|
           when_is.day = d.text
           when_is.change
         end
-        list_box :items => Date::ABBR_MONTHNAMES, :choose => 'Jan', :width => 70, :margin => 5 do |m|
+        month_names = Date::ABBR_MONTHNAMES
+        list_box :items => month_names, :choose => month_names[today.month], :width => 70, :margin => 5 do |m|
           when_is.month = m.text
           when_is.change
         end
-        list_box :items => (2009..2050).to_a, :choose => Date.today.year, :width => 100, :margin => 5 do |y|
+        list_box :items => (2009..2050).to_a, :choose => today.year, :width => 80, :margin => 5 do |y|
           when_is.year = y.text
           when_is.change
         end
