@@ -49,28 +49,26 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
     title '_when is'
     
     flow :margin => 20 do
-      border red
       flow(:width => 100){@before = caption strong("?"), :stroke => firebrick, :align => 'right'}
       caption strong("="), :stroke => firebrick
       caption strong("days"), :stroke => firebrick
       edit_line :width => 50 do |days|
         when_is.subtract days.text.to_i
       end
-      @dash = subtitle strong(" – "), :stroke => firebrick
-      debug @dash.rise
+      caption strong(" –   "), :stroke => firebrick
       flow :width => 220 do
         flow do
           fill oldlace
           stroke firebrick
           strokewidth 3
-          rect 10, 10, 220, 40, 10
+          rect -5, -5, 225, 40, 10
         end
         list_box :items => (1..31).to_a, :choose => today.day, :width => 67 do |d|
           when_is.day = d.text
           when_is.change
         end
         month_names = Date::ABBR_MONTHNAMES
-        list_box :items => month_names, :choose => month_names[today.month], :width => 70do |m|
+        list_box :items => month_names, :choose => month_names[today.month], :width => 70 do |m|
           when_is.month = m.text
           when_is.change
         end
