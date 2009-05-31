@@ -1,4 +1,5 @@
 require 'date'
+
 class When_is
   attr_accessor :day, :month, :year, :today
   def initialize(app)
@@ -12,8 +13,8 @@ class When_is
   def change
     debug "changing"
     @date = Date.parse("#{@year}-#{@month}-#{@day}")
-    @app.after((@date + @after_offset).to_s) unless @after_offset == nil
-    @app.before((@date - @before_offset).to_s) unless @before_offset == nil
+    @app.after((@date + @after_offset).strftime("%d.%m.%Y")) unless @after_offset == nil
+    @app.before((@date - @before_offset).strftime("%d.%m.%Y")) unless @before_offset == nil
   end
   
   def subtract(days)
@@ -24,10 +25,6 @@ class When_is
   def add(days)
     @after_offset = days
     change
-  end
-  
-  def to_s
-    @date.to_s
   end
 end
 
@@ -48,10 +45,9 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
   stack do
     title '_when is'
     
-    flow :margin => 20, :height => 100 do
-      border red
-      flow(:width => 100, :bottom => 40){@before = caption strong("?"), :stroke => firebrick, :align => 'right'}
-      caption strong("= days"), :stroke => firebrick
+    flow :margin => 20 do
+      flow(:width => 100){@before = caption strong("?"), :stroke => firebrick, :align => 'right'}
+      caption strong("= days "), :stroke => firebrick
       edit_line :width => 50 do |days|
         when_is.subtract days.text.to_i
       end
@@ -81,7 +77,7 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
       edit_line :width => 50 do |days|
         when_is.add days.text.to_i
       end
-      caption strong(" days ="), :stroke => firebrick
+      caption strong("days ="), :stroke => firebrick
       flow(:width => 100){@after = caption strong("?"), :stroke => firebrick, :align => 'left'}
     end
     inscription "v#{$version}", :stroke => gray, :margin_top => 90

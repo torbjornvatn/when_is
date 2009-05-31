@@ -7,3 +7,5 @@ h2. ### _when_is ###
 This small app can help you
 
 Built with the superb "Shoes":http://github.com/why/shoes
+
+<i>Ps: uses Norwegian date formatting dd.mm.yyyy</i>
