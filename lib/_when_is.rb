@@ -32,7 +32,7 @@ $version = 0.2
 Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => false do
   when_is = When_is.new self
   today = when_is.today
-  background oldlace
+  background gainsboro
   
   def before(date)
     @before.replace date
@@ -45,7 +45,7 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
   stack do
     title '_when is'
     
-    flow :margin => 20 do
+    flow :margin_top => 60, :margin_left => 30 do
       flow(:width => 100){@before = caption strong("?"), :stroke => firebrick, :align => 'right'}
       caption strong("= days "), :stroke => firebrick
       edit_line :width => 50 do |days|
@@ -54,7 +54,7 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
       caption strong(" –   "), :stroke => firebrick
       flow :width => 220 do
         flow do
-          fill oldlace
+          fill gainsboro
           stroke firebrick
           strokewidth 3
           rect -5, -5, 225, 40, 10
