@@ -29,8 +29,8 @@ class When_is
   def to_s
     @date.to_s
   end
-  
 end
+
 $version = 0.2
 Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => false do
   when_is = When_is.new self
@@ -48,10 +48,10 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
   stack do
     title '_when is'
     
-    flow :margin => 20 do
-      flow(:width => 100){@before = caption strong("?"), :stroke => firebrick, :align => 'right'}
-      caption strong("="), :stroke => firebrick
-      caption strong("days"), :stroke => firebrick
+    flow :margin => 20, :height => 100 do
+      border red
+      flow(:width => 100, :bottom => 40){@before = caption strong("?"), :stroke => firebrick, :align => 'right'}
+      caption strong("= days"), :stroke => firebrick
       edit_line :width => 50 do |days|
         when_is.subtract days.text.to_i
       end
@@ -81,8 +81,7 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
       edit_line :width => 50 do |days|
         when_is.add days.text.to_i
       end
-      caption strong("days"), :stroke => firebrick
-      caption strong("="), :stroke => firebrick
+      caption strong(" days ="), :stroke => firebrick
       flow(:width => 100){@after = caption strong("?"), :stroke => firebrick, :align => 'left'}
     end
     inscription "v#{$version}", :stroke => gray, :margin_top => 90
