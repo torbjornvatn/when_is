@@ -28,7 +28,7 @@ class When_is
   end
 end
 
-$version = 0.2
+$version = 0.3
 Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => false do
   when_is = When_is.new self
   today = when_is.today
