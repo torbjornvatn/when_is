@@ -35,7 +35,11 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
   bkcolor = rgb(255,237,191)
   border_color = rgb(247,128,60)
   textcolor = rgb(245,72,40)
-  windows_margin = 5
+  
+  def is_win?
+    RUBY_PLATFORM.include? 'mswin32'
+  end
+  windows_margin = 5 if is_win?
   
   background bkcolor
   
@@ -49,7 +53,6 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
   
   stack do
     title '_when is', :stroke => rgb(46,13,35), :margin => 10
-    
     flow :margin_top => 60, :margin_left => 30 do
       flow(:width => 100){@before = caption strong("?"), :stroke => textcolor, :align => 'right'}
       caption strong("= days "), :stroke => textcolor
@@ -78,6 +81,7 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
           when_is.change
         end
       end
+      windows_margin -= 2 if is_win?
       caption strong(" + "), :stroke => textcolor
       edit_line :width => 50, :margin => windows_margin do |days|
         when_is.add days.text.to_i
