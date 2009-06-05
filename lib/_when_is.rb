@@ -28,7 +28,7 @@ class When_is
   end
 end
 
-$version = 0.4
+$version = 0.5
 Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => false do
   when_is = When_is.new self
   today = when_is.today
@@ -72,7 +72,7 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
           when_is.change
         end
         month_names = Date::ABBR_MONTHNAMES
-        list_box :items => month_names, :choose => month_names[today.month], :width => 70, :margin => windows_margin do |m|
+        l = list_box :items => month_names, :choose => month_names[(if is_win? then today.month-1; else today.month end)], :width => 70, :margin => windows_margin do |m|
           when_is.month = m.text
           when_is.change
         end
@@ -89,6 +89,9 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
       caption strong("days ="), :stroke => textcolor
       flow(:width => 100){@after = caption strong("?"), :stroke => textcolor, :align => 'left'}
     end
-    inscription "v#{$version}", :stroke => gray, :margin_top => 90
+    flow(:margin_top => 90) do 
+      inscription "v#{$version}", :align => 'left', :stroke => gray, :margin_left => 25
+      inscription "#{today.strftime("%d.%m.%Y")}", :align => 'right', :stroke => gray
+    end
   end
 end
