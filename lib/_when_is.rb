@@ -11,7 +11,6 @@ class When_is
   end
   
   def change
-    debug "changing"
     @date = Date.parse("#{@year}-#{@month}-#{@day}")
     @app.after((@date + @after_offset).strftime("%d.%m.%Y")) unless @after_offset == nil
     @app.before((@date - @before_offset).strftime("%d.%m.%Y")) unless @before_offset == nil
@@ -28,7 +27,7 @@ class When_is
   end
 end
 
-$version = 0.5
+$version = 0.6
 Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => false do
   when_is = When_is.new self
   today = when_is.today
@@ -71,11 +70,9 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
           when_is.day = d.text
           when_is.change
         end
-#        month_names = Date::ABBR_MONTHNAMES
-#        l = list_box :items => month_names, :choose => month_names[(if is_win? then today.month-1; else today.month end)], :width => 70, :margin => windows_margin do |m|
-        l = list_box :items => (1..12).to_a, :choose => today.month, :width => 70, :margin => windows_margin do |m|
-          when_is.month = m.text
-          @test.text = m.text
+        month_names = Date::ABBR_MONTHNAMES
+         l = list_box :items => month_names[1..12], :choose => month_names[today.month], :width => 70, :margin => windows_margin do |m|
+          when_is.month = month_names.index(m.text)
           when_is.change
         end
         list_box :items => (1970..2050).to_a, :choose => today.year, :width => 80, :margin => windows_margin do |y|
@@ -90,7 +87,6 @@ Shoes.app :title => "when_is", :width => 800, :height => 300, :resizable => fals
       end
       caption strong("days ="), :stroke => textcolor
       flow(:width => 100){@after = caption strong("?"), :stroke => textcolor, :align => 'left'}
-      @test = para "test"
     end
     flow(:margin_top => 90) do 
       inscription "v#{$version}", :align => 'left', :stroke => gray, :margin_left => 25
